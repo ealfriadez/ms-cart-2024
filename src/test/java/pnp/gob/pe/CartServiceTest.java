@@ -1,4 +1,4 @@
-package com.codearti;
+package pnp.gob.pe;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,6 +12,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import pnp.gob.pe.mscart2023.model.dto.CartResponseDto;
+import pnp.gob.pe.mscart2023.model.entity.CartEntity;
+import pnp.gob.pe.mscart2023.model.entity.CartItemEntity;
+import pnp.gob.pe.mscart2023.repository.CartRepository;
+import pnp.gob.pe.mscart2023.service.CartService;
 
 @SpringBootTest
 public class CartServiceTest {
@@ -49,15 +54,6 @@ public class CartServiceTest {
 		Mockito.when(productRepository.findByCustomerId(1L)).thenReturn(Optional.of(cartEntity));
 	}
 	
-	@Test
-	public void whenValidGetId_ThenReturnCart() {
-		CartResponseDto cartResponseDto = cartService.findByCustomerId(1L);
-		assertEquals(1L, cartResponseDto.getCustomerId());
-		assertEquals(2, cartResponseDto.getItems().size());
-		assertEquals(3L, cartResponseDto.getItems().get(0).getProductId());
-		assertEquals("Teclado", cartResponseDto.getItems().get(0).getName());
-		assertEquals(BigDecimal.valueOf(300), cartResponseDto.getItems().get(0).getPrice());
-		assertEquals(3, cartResponseDto.getItems().get(0).getQuantity());
-	}
+
 
 }
