@@ -12,6 +12,7 @@ import pnp.gob.pe.mscart2023.model.dto.CartRequestDto;
 import pnp.gob.pe.mscart2023.model.dto.CartResponseDto;
 import pnp.gob.pe.mscart2023.model.dto.ProductResponseDto;
 import pnp.gob.pe.mscart2023.model.entity.CartEntity;
+import pnp.gob.pe.mscart2023.model.entity.CartItemEntity;
 import pnp.gob.pe.mscart2023.model.mapper.CartMapper;
 import pnp.gob.pe.mscart2023.repository.CartRepository;
 
@@ -38,6 +39,7 @@ public class CartService {
 	@Transactional
 	public CartResponseDto addItem(Long customerId, CartRequestDto cartRequestDto){
 		log.info("addItem");
+
 		Optional<CartEntity> cartOptional = cartRepository.findByCustomerId(customerId);
 		if (cartOptional.isEmpty()){
 			throw new ResourceNotFoundException("Resource not found", HttpStatus.NOT_FOUND);
@@ -46,11 +48,18 @@ public class CartService {
 		CartEntity cartEntity = cartOptional.get();
 
 		cartRequestDto.getItems().forEach(p -> {
-			ProductResponseDto product = productService.findById(p.getProductId());
-			if (product == null){
-				throw new ResourceNotFoundException("Product not found with id " + p.getProductId(), HttpStatus.NOT_FOUND);
-			}else{
-				cartEntity.getItems().add(mapper.responseToEntity(product, p.getQuantity()));
+
+			Optional<CartItemEntity> cartItemEntityOptional = cartEntity
+					.getItems().stream().filter(pt -> pt.getProductId() == p.getProductId()).findFirst();
+
+			if (!cartItemEntityOptional.isPresent()){
+				ProductResponseDto product = productService.findById(p.getProductId());
+				if (product == null){
+					throw new ResourceNotFoundException("Product not found with id " + p.getProductId(), HttpStatus.NOT_FOUND);
+				}else {
+					log.info("ms-product port: " + product.getPort());
+					cartEntity.getItems().add(mapper.responseToEntity(product, p.getQuantity()));
+				}
 			}
 		});
 
@@ -62,6 +71,7 @@ public class CartService {
 	@Transactional
 	public CartResponseDto removeItem(Long customerId, CartRequestDeleteDto cartRequestDeleteDto){
 		log.info("removeItem");
+
 		Optional<CartEntity> cartOptional = cartRepository.findByCustomerId(customerId);
 		if (cartOptional.isEmpty()){
 			throw new ResourceNotFoundException("Resource not found", HttpStatus.NOT_FOUND);
