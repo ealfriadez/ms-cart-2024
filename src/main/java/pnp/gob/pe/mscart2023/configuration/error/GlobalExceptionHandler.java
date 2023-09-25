@@ -68,5 +68,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		var error = new ErrorResponseDto("Validation failed for argument", "" + HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), errors);
 		return ResponseEntity.badRequest().body(error);//new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
 	}
-
 }
