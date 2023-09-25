@@ -16,6 +16,7 @@ import pnp.gob.pe.mscart2023.model.entity.CartItemEntity;
 import pnp.gob.pe.mscart2023.model.mapper.CartMapper;
 import pnp.gob.pe.mscart2023.repository.CartRepository;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -50,9 +51,9 @@ public class CartService {
 		cartRequestDto.getItems().forEach(p -> {
 
 			Optional<CartItemEntity> cartItemEntityOptional = cartEntity
-					.getItems().stream().filter(pt -> pt.getProductId() == p.getProductId()).findFirst();
+					.getItems().stream().filter(pt -> Objects.equals(pt.getProductId(), p.getProductId())).findFirst();
 
-			if (!cartItemEntityOptional.isPresent()){
+			if (cartItemEntityOptional.isEmpty()){
 				ProductResponseDto product = productService.findById(p.getProductId());
 				if (product == null){
 					throw new ResourceNotFoundException("Product not found with id " + p.getProductId(), HttpStatus.NOT_FOUND);
@@ -80,7 +81,7 @@ public class CartService {
 		CartEntity cartEntity = cartOptional.get();
 
 		cartRequestDeleteDto.getItems().forEach(p -> {
-			cartEntity.getItems().removeIf(pt -> pt.getProductId() == p.getProductId());
+			cartEntity.getItems().removeIf(pt -> Objects.equals(pt.getProductId(), p.getProductId()));
 		});
 
 		cartRepository.save(cartEntity);
