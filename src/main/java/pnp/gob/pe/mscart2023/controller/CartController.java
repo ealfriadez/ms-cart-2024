@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import pnp.gob.pe.mscart2023.model.dto.CartRequestDeleteDto;
 import pnp.gob.pe.mscart2023.model.dto.CartRequestDto;
 import pnp.gob.pe.mscart2023.model.dto.CartResponseDto;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-//@RefreshScope
+@RefreshScope
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "v1.0")

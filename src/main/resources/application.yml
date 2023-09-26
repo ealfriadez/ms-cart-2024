@@ -2,10 +2,10 @@ server:
   port: 8002
 spring:
   application:
-    name: ms-cart
+    name: ms-cart-2024
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:ms-cart
+    url: jdbc:h2:mem:ms-cart-2024
     username: sa
     password: ''
   h2:
@@ -24,7 +24,8 @@ spring:
     show-sql: true
   config:
     import:
-      - configserver:http://ms-config-server:8888
+      - configserver:http://localhost:8888
+      #- configserver:http://ms-config-server:8888
   profiles:
     active:
       - dev
@@ -37,4 +38,4 @@ eureka:
   client:
     enabled: true
     service-url:
-      defaultZone: http://ms-discovery-server:8761/eureka
+      default-zone: http://ms-discovery-server:8761/eureka
