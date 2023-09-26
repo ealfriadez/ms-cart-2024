@@ -2,6 +2,7 @@ package pnp.gob.pe.mscart2023.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,14 @@ import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
+//@Primary
 @Service
 public class ProductServiceRestTemplateImpl implements ProductService{
 
     private final RestTemplate restTemplate;
-    private String urlBase = "http://localhost:8001/v1.0";
+
+    private String urlBase = "http://ms-productos-2023:8001/v1.0";
+    //private String urlBase = "http://localhost:8001/v1.0";
     private String urlId = urlBase + "/{id}";
 
     @Override
