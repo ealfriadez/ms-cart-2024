@@ -13,28 +13,28 @@ spring:
       enabled: true
       path: /h2-console
   jpa:
-#    defer-datasource-initialization: true
-#    hibernate:
-#      ddl-auto: update
+    #    defer-datasource-initialization: true
+    #    hibernate:
+    #      ddl-auto: update
     properties:
       hibernate:
         '[show_sql]': true
         '[use_sql_comments]': false
         '[format_sql]': false
     show-sql: true
-#  config:
-#    import:
-#    - configserver:http://ms-config-server:8888
-#  profiles:
-#    active:
-#    - dev
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
+  config:
+    import:
+      - configserver:http://ms-config-server:8888
+  profiles:
+    active:
+      - dev
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 eureka:
   client:
     enabled: true
     service-url:
-      default-zone: http://ms-discovery-server:8761/eureka
+      defaultZone: http://ms-discovery-server:8761/eureka

@@ -34,7 +34,7 @@ public class CartController {
 
     private final CartService service;
 
-    //@Value("${configuration.texto}")
+    @Value("${configuration.texto}")
     private String text;
 
     private final Environment env;
