@@ -18,6 +18,8 @@ import pnp.gob.pe.mscart2023.repository.CartRepository;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -54,7 +56,14 @@ public class CartService {
 					.getItems().stream().filter(pt -> Objects.equals(pt.getProductId(), p.getProductId())).findFirst();
 
 			if (cartItemEntityOptional.isEmpty()){
-				ProductResponseDto product = productService.findById(p.getProductId());
+				//ProductResponseDto product = productService.findById(p.getProductId());
+				CompletableFuture<ProductResponseDto> productCF = productService.findByIdResilience(p.getProductId());
+				ProductResponseDto product = null;
+				try {
+					product = productCF.get();
+				}catch (InterruptedException | ExecutionException e){
+					log.warn("productCF.get(): " + e.getMessage(), e);
+				}
 				if (product == null){
 					throw new ResourceNotFoundException("Product not found with id " + p.getProductId(), HttpStatus.NOT_FOUND);
 				}else {
