@@ -4,24 +4,33 @@ spring:
   application:
     name: ms-cart-2024
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:ms-cart-2024
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;databaseName=db_cart
     username: sa
-    password: ''
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    password: '1a.2b.3c.'
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:ms-cart-2024
+#    username: sa
+#    password: ''
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
   jpa:
-    #    defer-datasource-initialization: true
-    #    hibernate:
-    #      ddl-auto: update
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
     properties:
       hibernate:
         '[show_sql]': true
         '[use_sql_comments]': false
         '[format_sql]': false
     show-sql: true
+  sql:
+    init:
+      mode: always
+      platform: sql
   config:
     import:
       - configserver:http://localhost:8888
@@ -29,11 +38,20 @@ spring:
   profiles:
     active:
       - dev
+  boot:
+    admin:
+      client:
+        url: http://localhost:8086
+        username: admin
+        password: admin
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: always
 eureka:
   client:
     enabled: true
