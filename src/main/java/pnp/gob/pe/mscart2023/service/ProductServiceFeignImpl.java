@@ -3,9 +3,12 @@ package pnp.gob.pe.mscart2023.service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.cloud.sleuth.instrument.async.TraceableExecutorService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,8 @@ import pnp.gob.pe.mscart2023.model.dto.ProductResponseDto;
 public class ProductServiceFeignImpl implements ProductService {
 	
 	private final ProductClientRest client;
+
+	private final BeanFactory beanFactory;
 
 	@Override
 	public List<ProductResponseDto> findAll() {
@@ -59,10 +64,10 @@ public class ProductServiceFeignImpl implements ProductService {
 					throw e;
 				}
 			}
-		}		/*
+		}/*
 				//issue: https://docs.spring.io/spring-cloud-sleuth/docs/current-SNAPSHOT/reference/html/integrations.html#sleuth-async-executor-service-integration
 				, new TraceableExecutorService(beanFactory, Executors.newFixedThreadPool(2), "findProductByIdResilience")
-				*/
+		*/
 		);
 	}
 

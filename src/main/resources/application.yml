@@ -3,16 +3,16 @@ server:
 spring:
   application:
     name: ms-cart-2024
-  datasource:
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://localhost:1433;databaseName=db_cart
-    username: sa
-    password: '1a.2b.3c.'
 #  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:ms-cart-2024
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://localhost:1433;databaseName=db_cart
 #    username: sa
-#    password: ''
+#    password: '1a.2b.3c.'
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:ms-cart-2024
+    username: sa
+    password: ''
 #  h2:
 #    console:
 #      enabled: true
@@ -30,7 +30,7 @@ spring:
   sql:
     init:
       mode: always
-      platform: sql
+      platform: h2
   config:
     import:
       - configserver:http://localhost:8888
@@ -41,9 +41,13 @@ spring:
   boot:
     admin:
       client:
+        enabled: false
         url: http://localhost:8086
         username: admin
         password: admin
+  zipkin:
+    enabled: false
+    base-url: http://localhost:9411
 management:
   endpoints:
     web:
