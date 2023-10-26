@@ -3,16 +3,17 @@ server:
 spring:
   application:
     name: ms-cart-2024
-#  datasource:
-#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-#    url: jdbc:sqlserver://localhost:1433;databaseName=db_cart
-#    username: sa
-#    password: '1a.2b.3c.'
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:ms-cart-2024
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://db-sqlserver-cart:1433;databaseName=db_cart
+#    url: jdbc:sqlserver://localhost:1433;databaseName=db_cart
     username: sa
-    password: ''
+    password: '1a.2b.3c.'
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:ms-cart-2024
+#    username: sa
+#    password: ''
 #  h2:
 #    console:
 #      enabled: true
@@ -30,24 +31,26 @@ spring:
   sql:
     init:
       mode: always
-      platform: h2
+      platform: sql
   config:
     import:
-      - configserver:http://localhost:8888
-      #- configserver:http://ms-config-server:8888
+    - configserver:http://ms-config-server:8888
+#    - configserver:http://localhost:8888
   profiles:
     active:
       - dev
   boot:
     admin:
       client:
-        enabled: false
-        url: http://localhost:8086
+        enabled: true
+        url: http://ms-sba-server:8086
+#        url: http://localhost:8086
         username: admin
         password: admin
   zipkin:
-    enabled: false
-    base-url: http://localhost:9411
+    enabled: true
+    base-url: http://ms-zipkin-server:9411
+#    base-url: http://localhost:9411
 management:
   endpoints:
     web:

@@ -13,6 +13,7 @@ import pnp.gob.pe.mscart2023.model.entity.CartEntity;
 import pnp.gob.pe.mscart2023.model.entity.CartItemEntity;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CartMapper {
@@ -32,7 +33,8 @@ public interface CartMapper {
 
 	@Named("entityToResponseForItems")
 	default List<CartItemResponseDto> entityToResponseForItems(List<CartItemEntity> items){
-		return items.stream().map(p -> entityToResponse(p)).toList();
+//		return items.stream().map(p -> entityToResponse(p)).toList();
+		return items.stream().map(p -> entityToResponse(p)).collect(Collectors.toList());
 	}
 
 	@Mapping(source = "response.id", target = "productId")
